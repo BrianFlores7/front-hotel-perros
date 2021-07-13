@@ -1,10 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder,FormGroup, Validators} from '@angular/forms';
+import {ServiceService} from '../app/service.service'
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ServiceService]
 })
-export class AppComponent {
-  title = 'hotel-perros';
+
+export class AppComponent implements OnInit {
+  formRegistro : FormGroup;
+  constructor(private service: ServiceService,private _router: Router,private _formBuilder:FormBuilder,  ) { }
+
+  ngOnInit(): void {
+    this.service.getAll().subscribe((res)=>{
+      console.log(res)
+    });
+    this.formRegistro = this._formBuilder.group({
+      nombre_completo: ['',Validators.required],
+      telefono: ['',Validators.required],
+      diaLlegada: ['',Validators.required],
+      diasEstancia : ['', Validators.required],
+  })
+
+}
+
+  addRegistro():void{
+    
+    const data = this.formRegistro.value;
+    this.service.addRegistro(data.nombre_completo,data.telefono,data.diaLlegada, data.diasEstancia).subscribe((access)=>{
+      console.log(access)
+    },error=>{
+      console.log("Datos inválidos")
+    })
+  }
+
 }
