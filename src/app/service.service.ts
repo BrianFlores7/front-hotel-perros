@@ -20,7 +20,7 @@ export class ServiceService {
     var str = '{' + '"name": "' + nombre_completo + '", "number" :' + telefono + ', "date": "' + diaLlegada + '", "diasEstancia" :' + diasEstancia +'}'
     
     var obj = JSON.parse(str)
-    console.log(obj)
-    return this.client.post('api/company/',{obj});
+
+    return this.client.post('api/company/',obj);
   }
 }

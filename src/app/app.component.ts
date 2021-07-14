@@ -14,10 +14,11 @@ import {Router} from '@angular/router';
 export class AppComponent implements OnInit {
   formRegistro : FormGroup;
   constructor(private service: ServiceService,private _router: Router,private _formBuilder:FormBuilder,  ) { }
+  registros: any = [];
 
   ngOnInit(): void {
     this.service.getAll().subscribe((res)=>{
-      console.log(res)
+      this.registros = res;
     });
     this.formRegistro = this._formBuilder.group({
       nombre_completo: ['',Validators.required],
@@ -30,11 +31,12 @@ export class AppComponent implements OnInit {
 
   addRegistro():void{
     
-    const data = this.formRegistro.value;
-    this.service.addRegistro(data.nombre_completo,data.telefono,data.diaLlegada, data.diasEstancia).subscribe((access)=>{
+    var data = this.formRegistro.value;
+  
+    this.service.addRegistro(data.nombre_completo, data.telefono, data.diaLlegada, data.diasEstancia).subscribe((access)=>{
       console.log(access)
     },error=>{
-      console.log("Datos inválidos")
+      console.log("Datos inválidos", error)
     })
   }
 
